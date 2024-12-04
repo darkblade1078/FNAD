@@ -50,7 +50,7 @@ public class ColinMovement : MonoBehaviour
         if(GameData.CameraScript.CamerasOpen && GameData.CameraScript.CurrentCamera == 2)
             StartCoroutine(CollinLockState());
 
-        if(IsLocked || !MoveCharacterRNG(Level))
+        if(IsLocked || !MoveCharacterRNG(Level) || GameData.nightCompleted)
             return;
 
         if(IsMoving)

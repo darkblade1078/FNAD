@@ -14,13 +14,27 @@ public class CameraScript : MonoBehaviour
     public GameObject MainCamera;
 
     public GameObject CameraUI;
-
+    public ShiftTimer ShiftTimer;
     private float CoolDownTimer;
+    private bool isNightCompleted = false;
     [SerializeField] private float CoolDownTime = 0.5f;
     [SerializeField] private PowerTimer Power;
 
-    void Start() {
+    private void nightCompletedFunction() {
+        isNightCompleted = true;
+    }
 
+    private void OnEnable() {
+        ShiftTimer.nightCompletedTrigger += nightCompletedFunction;
+        return;
+    }
+
+    private void OnDisable() {
+        ShiftTimer.nightCompletedTrigger -= nightCompletedFunction;
+    }
+
+    void Start() {
+        ShiftTimer = gameObject.GetComponent<ShiftTimer>();
         for(int i = 0; i < Cameras.Length; i++) {
             Cameras[i].SetActive(false);
         }
@@ -31,7 +45,7 @@ public class CameraScript : MonoBehaviour
 
     void Update() {
 
-        if(Power.Power > 0f) {
+        if(Power.Power > 0f && !isNightCompleted) {
 
             if(Input.GetKeyDown(OpenCameras)) {
                 CamerasOpen = !CamerasOpen;

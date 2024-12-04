@@ -37,7 +37,7 @@ public class AIMovemovement : MonoBehaviour
         }
 
         //check if the character is moving or not
-        if(!MoveCharacterRNG(Level))
+        if(!MoveCharacterRNG(Level) || GameData.nightCompleted)
             return;
 
         //check if the character is at a door or not

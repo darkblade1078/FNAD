@@ -9,6 +9,7 @@ public class GameData : MonoBehaviour
     public GameOver GameOver;
     public CameraScript CameraScript;
     public bool enabledSignal = false;
+    public bool nightCompleted = false;
 
     public Dictionary<string, int[]> hashmap = new Dictionary<string, int[]>
     {
@@ -18,6 +19,20 @@ public class GameData : MonoBehaviour
         { "Colin", new int[] { 0, 1, 2, 6, 5, 16 } }
     };
 
+    private void nightCompletedFunction() {
+        CameraScript.CameraUI.SetActive(false);
+        PowerTimer.PowerUI.SetActive(false);
+        nightCompleted = true;
+    }
+
+    private void OnEnable() {
+        ShiftTimer.nightCompletedTrigger += nightCompletedFunction;
+        return;
+    }
+
+    private void OnDisable() {
+        ShiftTimer.nightCompletedTrigger -= nightCompletedFunction;
+    }
 
     void Start() {
         PowerTimer = gameObject.GetComponent<PowerTimer>();

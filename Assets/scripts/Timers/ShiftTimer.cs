@@ -7,13 +7,13 @@ public class ShiftTimer : MonoBehaviour
     public float timer;
     [SerializeField] private int endTime = 6;
     [SerializeField] private string digitalClock;
-    [SerializeField] private float timeMultiplier = 2f;
     public TextMeshProUGUI clockText;
     [SerializeField] private GameObject Winscreen;
     private float[] TimeTriggers = { 120.0f, 180.0f, 240.0f };
     private int iteration = 0;
     private bool finalStage = false;
     public static event Action<string[]> LevelTrigger;
+    public static event Action nightCompletedTrigger;
     [SerializeField] private int SecondsPerHour;
 
     void Start() {
@@ -23,9 +23,9 @@ public class ShiftTimer : MonoBehaviour
 
     void Update() {
 
-        timer += Time.deltaTime * timeMultiplier;
+        timer += Time.deltaTime;
 
-        if(timer >= TimeTriggers[iteration] && !finalStage) {
+        if(!finalStage) {
 
             if(iteration == 0) 
                 TriggerDataSignal(new string[] { "Keenum" });
@@ -47,8 +47,13 @@ public class ShiftTimer : MonoBehaviour
         clockText.text = digitalClock;
 
         if(hours == endTime) {
+            TriggerNightCompletedSignal();
             Winscreen.SetActive(true);
         }
+    }
+
+    public static void TriggerNightCompletedSignal() {
+        nightCompletedTrigger?.Invoke();
     }
 
     public static void TriggerDataSignal(string[] data) {
